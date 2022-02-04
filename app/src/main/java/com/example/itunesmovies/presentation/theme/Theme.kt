@@ -1,4 +1,4 @@
-package com.example.itunesmovies.ui.theme
+package com.example.itunesmovies.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
