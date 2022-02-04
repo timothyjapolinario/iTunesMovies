@@ -1,6 +1,6 @@
 package com.example.itunesmovies.data.responses
 
-data class iTunesMovieResult(
+data class SearchResult(
     val resultCount: Int,
-    val iTunesMovies: List<iTunesMovie>
+    val results: List<Result>
 )

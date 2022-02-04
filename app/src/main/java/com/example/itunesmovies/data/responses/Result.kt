@@ -1,6 +1,6 @@
 package com.example.itunesmovies.data.responses
 
-data class iTunesMovie(
+data class Result(
     val artistName: String,
     val artworkUrl100: String,
     val artworkUrl30: String,
