@@ -8,4 +8,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieListViewModel  @Inject constructor(
     private val repository: iTunesMovieRepository
-): ViewModel()
+): ViewModel(){
+    fun searchMovie(){
+
+    }
+}

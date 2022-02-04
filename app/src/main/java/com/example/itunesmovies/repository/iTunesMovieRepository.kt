@@ -18,7 +18,7 @@ class iTunesMovieRepository @Inject constructor(
         return Resource.Success(response)
     }
 
-    suspend fun getSearchMovie(term: String, media: String): Resource<SearchResult>{
+    suspend fun getSearchMovie(term: String, media:String = "movie"): Resource<SearchResult>{
         val response = try {
             iTuneMovieApi.getMovieList(term, media)
         }catch(e:Exception){
