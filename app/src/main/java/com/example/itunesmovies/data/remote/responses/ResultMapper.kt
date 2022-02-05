@@ -11,6 +11,7 @@ class ResultMapper: DomainMapper<Result, Movie>{
             artworkUrl30=model.artworkUrl30,
             artworkUrl60=model.artworkUrl60,
             longDescription=model.longDescription,
+            shortDescription = model.shortDescription,
             primaryGenreName=model.primaryGenreName,
             trackHdPrice=model.trackHdPrice,
             trackId=model.trackId,

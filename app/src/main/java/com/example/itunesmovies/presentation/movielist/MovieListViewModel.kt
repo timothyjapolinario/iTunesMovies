@@ -26,9 +26,6 @@ class MovieListViewModel  @Inject constructor(
         return repository.getSearchMovieList("cat")
     }
 
-
-
-
     suspend fun newSearch(){
         viewModelScope.launch(Dispatchers.Default) {
             isLoading.value = true
@@ -39,7 +36,7 @@ class MovieListViewModel  @Inject constructor(
                 is Resource.Success->{
                     movies.value = result.data!!
                     isLoading.value = false
-                    Log.i("MYLOGS: ", movies.value[0].artistName)
+                    Log.i("MYLOGS: ", movies.value[0].artistName!!)
                 }
                 is Resource.Error->{
                     loadError.value = result.message!!
