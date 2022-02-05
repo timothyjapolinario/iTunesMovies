@@ -1,6 +1,6 @@
 package com.example.itunesmovies.di
 
-import com.example.itunesmovies.data.iTunesMovieApi.iTunesMovieApi
+import com.example.itunesmovies.data.remote.iTunesMovieApi.iTunesMovieApi
 import com.example.itunesmovies.repository.iTunesMovieRepository
 import com.example.itunesmovies.util.Constants.BASE_URL
 import dagger.Module

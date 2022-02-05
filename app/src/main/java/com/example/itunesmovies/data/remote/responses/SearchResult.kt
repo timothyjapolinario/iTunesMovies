@@ -1,4 +1,4 @@
-package com.example.itunesmovies.data.responses
+package com.example.itunesmovies.data.remote.responses
 
 data class SearchResult(
     val resultCount: Int,

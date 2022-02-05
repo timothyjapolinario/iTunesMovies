@@ -1,5 +1,5 @@
-package com.example.itunesmovies.data.iTunesMovieApi
-import com.example.itunesmovies.data.responses.SearchResult
+package com.example.itunesmovies.data.remote.iTunesMovieApi
+import com.example.itunesmovies.data.remote.responses.SearchResult
 import retrofit2.http.GET
 import retrofit2.http.Query
 

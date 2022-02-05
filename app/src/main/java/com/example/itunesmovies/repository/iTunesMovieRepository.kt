@@ -1,6 +1,6 @@
 package com.example.itunesmovies.repository
-import com.example.itunesmovies.data.iTunesMovieApi.iTunesMovieApi
-import com.example.itunesmovies.data.responses.SearchResult
+import com.example.itunesmovies.data.remote.iTunesMovieApi.iTunesMovieApi
+import com.example.itunesmovies.data.remote.responses.SearchResult
 import com.example.itunesmovies.util.Resource
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
