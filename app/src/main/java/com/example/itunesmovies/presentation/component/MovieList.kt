@@ -29,6 +29,7 @@ fun MovieList(
             ){index, movie->
                 MovieCard(
                     movie = movie,
+                    isFavorite = false,
                     onClick = { Log.i("MYLOGS: " ,"MOVIE CARD CLICKED!")}
                 )
             }

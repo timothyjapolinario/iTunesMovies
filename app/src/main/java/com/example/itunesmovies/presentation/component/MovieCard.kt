@@ -28,6 +28,7 @@ import com.example.itunesmovies.R
 @Composable
 fun MovieCard(
     movie:Movie,
+    isFavorite:Boolean,
     onClick: ()-> Unit,
 ){
     val movieImagePainter = rememberImagePainter(
@@ -74,17 +75,12 @@ fun MovieCard(
             ){
                 Text(text = movie.trackName,
                     fontSize = 15.sp,
-
                 )
-                val shortDescription = if(movie.shortDescription != null){
-                    movie.shortDescription
-                }else{
-                    "No short description"
-                }
-                Text(text = shortDescription,
-                    modifier = Modifier.padding(start = 5.dp),
-                    fontSize = 10.sp,
-                    textAlign = TextAlign.Justify
+                Text(text = movie.primaryGenreName!!,
+                    fontSize = 10.sp
+                )
+                Text(text = movie.trackHdPrice!!.toString(),
+                    fontSize = 12.sp
                 )
             }
             Column(
@@ -94,7 +90,7 @@ fun MovieCard(
             ) {
                 Image(
                     painterResource(
-                        id = R.drawable.heart
+                        id = R.drawable.heart_grey
                     ),
                     contentDescription = "pokemon_logo",
                     modifier = Modifier
