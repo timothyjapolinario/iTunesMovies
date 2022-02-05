@@ -21,7 +21,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Greeting()
+            ITunesMoviesTheme {
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "movie_list_screen"){
+                    composable("movie_list_screen"){
+                        MovieListScreen()
+                    }
+                }
+            }
         }
     }
 }

@@ -15,13 +15,21 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     modifier: Modifier,
     hint: String = "",
-    onSearch: (String) -> Unit = {}
+    newSearch: () -> Unit
 ){
+    val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable{
         mutableStateOf("")
     }
@@ -33,8 +41,17 @@ fun SearchBar(
             value = text,
             onValueChange = {newString->
                 text = newString
-                onSearch(newString)
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    newSearch()
+                    keyboardController?.hide()
+                }
+            ),
             maxLines = 1,
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
