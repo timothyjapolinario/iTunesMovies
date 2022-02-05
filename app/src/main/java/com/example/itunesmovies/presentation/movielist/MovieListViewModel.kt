@@ -39,6 +39,7 @@ class MovieListViewModel  @Inject constructor(
                 is Resource.Success->{
                     movies.value = result.data!!
                     isLoading.value = false
+                    Log.i("MYLOGS: ", movies.value[0].artistName)
                 }
                 is Resource.Error->{
                     loadError.value = result.message!!
