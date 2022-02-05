@@ -18,4 +18,9 @@ class ResultMapper: DomainMapper<Result, Movie>{
             trackPrice=model.trackPrice,
         )
     }
+    fun toDomainList(initial: List<Result>): List<Movie>{
+        return initial.map {
+            mapToDomainModel(it)
+        }
+    }
 }

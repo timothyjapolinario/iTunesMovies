@@ -1,6 +1,7 @@
 package com.example.itunesmovies.di
 
 import com.example.itunesmovies.data.remote.iTunesMovieApi.iTunesMovieApi
+import com.example.itunesmovies.data.remote.responses.ResultMapper
 import com.example.itunesmovies.repository.iTunesMovieRepository
 import com.example.itunesmovies.util.Constants.BASE_URL
 import dagger.Module
@@ -19,8 +20,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRepository(
-        api: iTunesMovieApi
-    ) = iTunesMovieRepository(api)
+        api: iTunesMovieApi,
+        resultMapper: ResultMapper
+    ) = iTunesMovieRepository(api, resultMapper)
 
     @Singleton
     @Provides
@@ -30,5 +32,11 @@ object AppModule {
             .baseUrl(BASE_URL)
             .build()
             .create(iTunesMovieApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideResultMapper(): ResultMapper{
+        return ResultMapper()
     }
 }
