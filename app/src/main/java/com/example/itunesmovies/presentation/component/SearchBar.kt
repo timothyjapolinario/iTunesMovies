@@ -1,5 +1,6 @@
 package com.example.itunesmovies.presentation.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,10 +22,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.itunesmovies.presentation.movielist.MovieListViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
+    viewModel:MovieListViewModel = hiltViewModel(),
     modifier: Modifier,
     hint: String = "",
     newSearch: () -> Unit
@@ -41,6 +45,8 @@ fun SearchBar(
             value = text,
             onValueChange = {newString->
                 text = newString
+                viewModel.searchQuery.value = text
+                Log.i("MYLOGS: ", text)
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,

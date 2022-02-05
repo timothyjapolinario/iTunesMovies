@@ -6,17 +6,21 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.presentation.component.SearchBar
 import com.example.itunesmovies.util.Resource
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieListScreen(
     viewModel: MovieListViewModel = hiltViewModel()
 ){
+    val coroutineScope = rememberCoroutineScope()
     val movieInfo = produceState<Resource<List<Movie>>>(initialValue = Resource.Loading()){
         value = viewModel.searchMovie()
     }.value
@@ -29,10 +33,11 @@ fun MovieListScreen(
             SearchBar(modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-                hint = "Search"
-            ){
-                //Onsearch
-            }
+                hint = "Search",
+                newSearch = {coroutineScope.launch {
+                    viewModel.newSearch()
+                }}
+            )
             MovieInfoStateWrapper(movieInfo = movieInfo)
         }
     }
@@ -44,7 +49,7 @@ fun MovieInfoStateWrapper(
 ){
     when(movieInfo){
         is Resource.Success->{
-            Log.i("MYLOGS: ", movieInfo.data!![0].artistName)
+            Log.i("MYLOGS: ", movieInfo.data!!.size.toString())
         }
         is Resource.Error->{
             Log.i("MYLOGS: ", "error")

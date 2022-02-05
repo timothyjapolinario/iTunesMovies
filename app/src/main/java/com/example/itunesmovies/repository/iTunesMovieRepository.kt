@@ -21,7 +21,7 @@ class iTunesMovieRepository @Inject constructor(
         return Resource.Success(mapper.mapToDomainModel(response.results[0]))
     }
 
-    suspend fun getSearchMovie(term: String, media:String = "movie"): Resource<List<Movie>>{
+    suspend fun getSearchMovieList(term: String, media:String = "movie"): Resource<List<Movie>>{
         val response = try {
             iTuneMovieApi.getMovieList(term, media)
         }catch(e:Exception){
