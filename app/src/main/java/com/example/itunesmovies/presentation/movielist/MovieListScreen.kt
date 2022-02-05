@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 fun MovieListScreen(
     viewModel: MovieListViewModel = hiltViewModel()
 ){
+    viewModel.getAllFavoriteId()
     val movies = viewModel.movies.value
     val coroutineScope = rememberCoroutineScope()
     val isLoading = viewModel.isLoading.value
@@ -65,6 +66,7 @@ fun MovieListScreen(
                 }}
             )
             MovieList(
+                viewModel = viewModel,
                 modifier = Modifier
                     .align(CenterHorizontally),
                 loading = isLoading,

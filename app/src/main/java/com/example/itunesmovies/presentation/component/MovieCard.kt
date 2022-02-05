@@ -8,6 +8,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -24,13 +25,18 @@ import coil.compose.rememberImagePainter
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.util.CustomImage
 import com.example.itunesmovies.R
+import com.example.itunesmovies.presentation.movielist.MovieListViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieCard(
     movie:Movie,
     isFavorite:Boolean,
+    viewModel:MovieListViewModel,
     onClick: ()-> Unit,
 ){
+    val coroutineScope = rememberCoroutineScope()
     val movieImagePainter = rememberImagePainter(
         data = movie.artworkUrl100,
         builder = {
@@ -89,13 +95,18 @@ fun MovieCard(
                     .padding(top = 9.dp),
             ) {
                 Image(
-                    painterResource(
-                        id = R.drawable.heart_grey
+                    painter = painterResource(
+                        id = if(isFavorite){
+                            R.drawable.heart_red
+                        }else{
+                            R.drawable.heart_grey
+                        }
                     ),
                     contentDescription = "pokemon_logo",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(25.dp)
+                        .clickable { coroutineScope.launch { viewModel.addToFavorites(movie) } }
                 )
             }
         }
