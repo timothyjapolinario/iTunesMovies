@@ -30,6 +30,27 @@ fun MovieListScreen(
         value = viewModel.searchMovie()
     }.value
 
+    val movieTest1 = Movie(
+        trackName = "LoL",
+        trackId = 1,
+        trackPrice = 10.0,
+        shortDescription = "cat",
+        artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Video123/v4/33/9d/5d/339d5dd4-2139-eadc-7d5f-89f3b103273d/source/100x100bb.jpg"
+    )
+    val movieTest2 = Movie(
+        trackName = "Wut",
+        trackId = 2,
+        trackPrice = 10.0,
+        artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Video123/v4/33/9d/5d/339d5dd4-2139-eadc-7d5f-89f3b103273d/source/100x100bb.jpg"
+    )
+    val movieTest3 = Movie(
+        trackName = "Tired",
+        trackId = 1,
+        trackPrice = 10.0
+    )
+
+    val movieListTest = listOf(movieTest1, movieTest2, movieTest3)
+
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()

@@ -1,10 +1,12 @@
 package com.example.itunesmovies.data.remote.responses
 
+import android.util.Log
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.models.util.DomainMapper
 
 class ResultMapper: DomainMapper<Result, Movie>{
     override fun mapToDomainModel(model: Result): Movie {
+
         return Movie(
             artistName=model.artistName,
             artworkUrl100=model.artworkUrl100,

@@ -1,14 +1,14 @@
 package com.example.itunesmovies.models
 
 data class Movie (
-    val artistName: String?,
-    val artworkUrl100: String?,
-    val artworkUrl30: String?,
-    val artworkUrl60: String?,
-    val longDescription: String?,
-    val shortDescription: String?,
-    val primaryGenreName: String?,
-    val trackHdPrice: Double?,
+    val artistName: String? = null,
+    val artworkUrl100: String?= null,
+    val artworkUrl30: String?= null,
+    val artworkUrl60: String?= null,
+    val longDescription: String?= null,
+    val shortDescription: String?= null,
+    val primaryGenreName: String?= null,
+    val trackHdPrice: Double?= null,
     val trackId: Int,
     val trackName: String,
     val trackPrice: Double,

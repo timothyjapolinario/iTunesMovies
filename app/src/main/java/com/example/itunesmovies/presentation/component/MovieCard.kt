@@ -1,5 +1,6 @@
 package com.example.itunesmovies.presentation.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,17 +8,33 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterStart
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.itunesmovies.models.Movie
+import com.example.itunesmovies.util.CustomImage
+import com.example.itunesmovies.R
 
 @Composable
 fun MovieCard(
     movie:Movie,
     onClick: ()-> Unit,
 ){
+    val movieImagePainter = rememberImagePainter(
+        data = movie.artworkUrl100,
+        builder = {
+            //some transformation if needed.
+        })
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -26,27 +43,64 @@ fun MovieCard(
                 top = 6.dp
             )
             .fillMaxWidth()
+            .heightIn(120.dp)
             .clickable(onClick = onClick),
         elevation = 8.dp
     ){
         Row{
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.8f)
                     .fillMaxWidth()
-                    .height(100.dp)
-                    .background(color = Color.Cyan)
+                    .height(120.dp),
+                verticalArrangement = Arrangement.Center
             ){
-                ShimmerRecipeCardItem(imageHeight = 100.dp)
+                CustomImage(
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .height(100.dp)
+                        .width(100.dp),
+                    painter = movieImagePainter,
+                    placeHolder = { ShimmerRecipeCardItem(imageHeight = 100.dp) },
+                    contentDescription = "MovieArtWork")
             }
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(3f)
                     .fillMaxWidth()
                     .height(100.dp)
-                    .background(color = Color.Green)
+                    .padding(top = 9.dp)
+
             ){
-                Text(movie.trackName)
+                Text(text = movie.trackName,
+                    fontSize = 15.sp,
+
+                )
+                val shortDescription = if(movie.shortDescription != null){
+                    movie.shortDescription
+                }else{
+                    "No short description"
+                }
+                Text(text = shortDescription,
+                    modifier = Modifier.padding(start = 5.dp),
+                    fontSize = 10.sp,
+                    textAlign = TextAlign.Justify
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .weight(0.5f)
+                    .padding(top = 9.dp),
+            ) {
+                Image(
+                    painterResource(
+                        id = R.drawable.heart
+                    ),
+                    contentDescription = "pokemon_logo",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(25.dp)
+                )
             }
         }
     }
@@ -71,7 +125,7 @@ fun MovieCardPreview(){
                     .weight(1f)
                     .fillMaxWidth()
                     .height(100.dp)
-                    .background(color = Color.Cyan)
+
             ){
                 ShimmerRecipeCardItem(imageHeight = 100.dp)
             }
@@ -80,9 +134,7 @@ fun MovieCardPreview(){
                     .weight(3f)
                     .fillMaxWidth()
                     .height(100.dp)
-                    .background(color = Color.Green)
             ){
-
             }
         }
     }
