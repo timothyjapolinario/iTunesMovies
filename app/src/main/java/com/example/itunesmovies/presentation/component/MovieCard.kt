@@ -1,5 +1,6 @@
 package com.example.itunesmovies.presentation.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,8 @@ fun MovieCard(
     viewModel:MovieListViewModel,
     onClick: ()-> Unit,
 ){
+    Log.i("MYLOGS:", "CARD RECOMPOSED!")
+    Log.i("MYLOGS: Favorite-", isFavorite.toString())
     val coroutineScope = rememberCoroutineScope()
     val movieImagePainter = rememberImagePainter(
         data = movie.artworkUrl100,

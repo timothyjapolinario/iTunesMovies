@@ -45,7 +45,6 @@ class MovieListViewModel  @Inject constructor(
             try{
                 if(result.isNotEmpty()){
                     favoriteMovieIds.value = result
-                    Log.i("MYLOGS: ID-", favoriteMovieIds.value[0].toString())
                 }
             }catch (e:Exception){
             }
@@ -105,6 +104,7 @@ class MovieListViewModel  @Inject constructor(
                     isLoading.value = false
                 }else{
                     favoriteMovies.value = listOf()
+                    favoriteMovieIds.value = listOf()
                     isLoading.value = false
                 }
             }catch (e:Exception){
