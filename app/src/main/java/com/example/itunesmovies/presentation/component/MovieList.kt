@@ -1,5 +1,6 @@
 package com.example.itunesmovies.presentation.component
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ fun MovieList(
     modifier: Modifier = Modifier,
     loading: Boolean,
     movies: List<Movie>,
+    context: Context,
     navController: NavController
 ) {
     if(loading){
@@ -38,7 +40,11 @@ fun MovieList(
                     movie = movie,
                     isFavorite = isFavorite.value,
                     onClick = { navController.navigate(
-                        "movie_detail_screen/${movie.trackId}"
+                        if(viewModel.isOnline(context)){
+                            "movie_detail_screen/${movie.trackId}"
+                        }else{
+                            "movie_detail_offline_screen/${movie.trackId}"
+                        }
                     )}
                 )
             }

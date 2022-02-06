@@ -62,7 +62,6 @@ fun SearchBar(
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
             modifier = modifier
-                .fillMaxWidth()
                 .shadow(5.dp, CircleShape)
                 .background(Color.White, CircleShape)
                 .padding(horizontal = 20.dp, vertical = 12.dp)

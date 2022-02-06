@@ -1,5 +1,8 @@
 package com.example.itunesmovies.presentation.moviedetail
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.compose.material.BottomDrawerState
 import androidx.compose.material.BottomDrawerValue
@@ -29,12 +32,11 @@ class MovieDetailViewModel  @Inject constructor(
     @OptIn(ExperimentalMaterialApi::class)
     val bottomDrawerState = BottomDrawerState(BottomDrawerValue.Closed)
     val favoriteMovieIds:MutableState<List<Int>> = mutableStateOf(listOf())
-    val isLoading = mutableStateOf(false)
-    var loadError = mutableStateOf("")
-    var hasUser = ""
+
     var isAddingOrRemovingToDatabase = mutableStateOf(false)
     val movies:MutableState<List<Movie>> = mutableStateOf(listOf())
     val searchQuery = mutableStateOf("star")
+    val currentMovie:MutableState<Movie?> = mutableStateOf(null)
 
     fun getAllFavoriteId() = viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getAllFavoriteMovieId().distinctUntilChanged().collect { result->
@@ -47,12 +49,43 @@ class MovieDetailViewModel  @Inject constructor(
             }
         }
     }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     suspend fun searchMovie(): Resource<List<Movie>> {
         return repository.getSearchMovieList("cat")
     }
 
     suspend fun getMovieFromNetwork(id:Int): Resource<Movie>{
         return repository.getMovieInfo(id)
+    }
+    fun getMovieFromLocal(id: Int) = viewModelScope.launch(Dispatchers.IO){
+        localMovieRepository.getMovie(trackId = id).distinctUntilChanged().collect { result->
+            try{
+                currentMovie.value = result
+            }catch (e:Exception){
+            }
+        }
     }
 
     suspend fun removeFromFavorite(movie: Movie){

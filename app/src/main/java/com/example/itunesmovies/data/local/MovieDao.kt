@@ -21,4 +21,10 @@ interface MovieDao {
 
     @Query("DELETE FROM favorite_movies WHERE trackId = :trackId")
     suspend fun removeFavoriteMovie(trackId: Int)
+
+    @Query("SELECT * FROM favorite_movies WHERE trackId = :trackId")
+    fun getFavoriteMovie(trackId: Int): Flow<Movie>
+
+    @Query("SELECT * FROM favorite_movies WHERE trackName LIKE :trackName")
+    fun searchMovie(trackName: String): Flow<List<Movie>>
 }

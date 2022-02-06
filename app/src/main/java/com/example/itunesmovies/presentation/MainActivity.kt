@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.itunesmovies.presentation.moviedetail.MovieDetailOfflineScreen
 import com.example.itunesmovies.presentation.moviedetail.MovieDetailScreen
 import com.example.itunesmovies.presentation.movielist.MovieListScreen
 import com.example.itunesmovies.presentation.theme.ITunesMoviesTheme
@@ -41,7 +42,19 @@ class MainActivity : ComponentActivity() {
                         val trackId = remember{
                             it.arguments?.getInt("trackId")
                         }
-                        MovieDetailScreen(trackId = trackId!!, navController = navController)
+                        MovieDetailScreen(trackId = trackId!!)
+                    }
+                    composable("movie_detail_offline_screen/{trackId}",
+                        arguments = listOf(
+                            navArgument("trackId"){
+                                type = NavType.IntType
+                            }
+                        )
+                    ){
+                        val trackId = remember{
+                            it.arguments?.getInt("trackId")
+                        }
+                        MovieDetailOfflineScreen(trackId = trackId!!)
                     }
                 }
             }
@@ -49,7 +62,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(
-) {
-}
