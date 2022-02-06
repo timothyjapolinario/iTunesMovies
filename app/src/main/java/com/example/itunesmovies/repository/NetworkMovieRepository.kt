@@ -8,7 +8,7 @@ import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class iTunesMovieRepository @Inject constructor(
+class NetworkMovieRepository @Inject constructor(
     private val iTuneMovieApi: iTunesMovieApi,
     private val mapper: ResultMapper
 ) {

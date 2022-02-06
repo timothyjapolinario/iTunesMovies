@@ -8,11 +8,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import com.example.itunesmovies.models.Movie
-import com.example.itunesmovies.models.User
 import com.example.itunesmovies.repository.LocalMovieRepository
-import com.example.itunesmovies.repository.iTunesMovieRepository
+import com.example.itunesmovies.repository.NetworkMovieRepository
 import com.example.itunesmovies.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieListViewModel  @Inject constructor(
-    private val repository: iTunesMovieRepository,
+    private val repository: NetworkMovieRepository,
     private val localMovieRepository: LocalMovieRepository
 ): ViewModel(){
     val isOnFavorite = mutableStateOf(false)
@@ -89,6 +87,7 @@ class MovieListViewModel  @Inject constructor(
         }else{
             isOnFavorite.value = true
             getAllFavoriteMovies()
+            searchMovieLocal()
             movies.value = favoriteMovies.value
             Log.i("TRACE:", "onClickFavorite else")
         }
@@ -103,6 +102,9 @@ class MovieListViewModel  @Inject constructor(
                             movies.value = favoriteMovies.value
                         }
                     }
+                    isLoading.value = false
+                }else{
+                    favoriteMovies.value = listOf()
                     isLoading.value = false
                 }
             }catch (e:Exception){
@@ -160,7 +162,7 @@ class MovieListViewModel  @Inject constructor(
     }
     suspend fun removeFromFavorite(movie: Movie){
         if(!isAddingOrRemovingToDatabase.value){
-            Log.i("MYLOGS: ", "Adding to database")
+            Log.i("MYLOGS: ", "Removing")
             isAddingOrRemovingToDatabase.value = true
             localMovieRepository.remove(movie.trackId)
             isAddingOrRemovingToDatabase.value = false

@@ -12,9 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.itunesmovies.models.Movie
-import com.example.itunesmovies.models.User
 import com.example.itunesmovies.repository.LocalMovieRepository
-import com.example.itunesmovies.repository.iTunesMovieRepository
+import com.example.itunesmovies.repository.NetworkMovieRepository
 import com.example.itunesmovies.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel  @Inject constructor(
-    private val repository: iTunesMovieRepository,
+    private val repository: NetworkMovieRepository,
     private val localMovieRepository: LocalMovieRepository
 ): ViewModel(){
 
