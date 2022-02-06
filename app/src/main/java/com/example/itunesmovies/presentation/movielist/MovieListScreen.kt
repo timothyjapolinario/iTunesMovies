@@ -30,11 +30,13 @@ fun MovieListScreen(
     viewModel: MovieListViewModel = hiltViewModel(),
     navController: NavController
 ){
-    Log.i("MYLOGS", "RECOMPOSED!!!")
+
 
     viewModel.getAllFavoriteId()
+    Log.i("MYLOGS: ", "MOVIELIST RECOMPO2")
 
     val movies = viewModel.movies.value
+
     val coroutineScope = rememberCoroutineScope()
     val isLoading = viewModel.isLoading.value
 
@@ -42,6 +44,7 @@ fun MovieListScreen(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ){
+
         Column {
             val context = LocalContext.current
             Row(modifier = Modifier.fillMaxWidth()){

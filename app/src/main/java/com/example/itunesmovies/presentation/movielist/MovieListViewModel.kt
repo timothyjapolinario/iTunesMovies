@@ -105,6 +105,9 @@ class MovieListViewModel  @Inject constructor(
                 }else{
                     favoriteMovies.value = listOf()
                     favoriteMovieIds.value = listOf()
+                    if(isOnFavorite.value) {
+                        movies.value = listOf()
+                    }
                     isLoading.value = false
                 }
             }catch (e:Exception){

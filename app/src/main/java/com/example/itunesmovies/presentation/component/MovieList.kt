@@ -24,6 +24,7 @@ fun MovieList(
     context: Context,
     navController: NavController
 ) {
+    Log.i("MYLOGS: ", "MOVIELIST RECOMPO")
     if(loading){
         CircularProgressIndicator(
             modifier = modifier
