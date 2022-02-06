@@ -16,21 +16,20 @@ import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.presentation.component.SearchBar
 import com.example.itunesmovies.util.Resource
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.itunesmovies.presentation.component.MovieList
 import kotlinx.coroutines.launch
 
 @Composable
 fun MovieListScreen(
-    viewModel: MovieListViewModel = hiltViewModel()
+    viewModel: MovieListViewModel = hiltViewModel(),
+    navController: NavController
 ){
     viewModel.getAllFavoriteId()
+    //viewModel.checkUser()
     val movies = viewModel.movies.value
     val coroutineScope = rememberCoroutineScope()
     val isLoading = viewModel.isLoading.value
-    val movieInfo = produceState<Resource<List<Movie>>>(initialValue = Resource.Loading()){
-        value = viewModel.searchMovie()
-    }.value
-
     val movieTest1 = Movie(
         trackName = "LoL",
         trackId = 1,
@@ -70,7 +69,8 @@ fun MovieListScreen(
                 modifier = Modifier
                     .align(CenterHorizontally),
                 loading = isLoading,
-                movies = movies
+                movies = movies,
+                navController = navController
             )
         }
     }

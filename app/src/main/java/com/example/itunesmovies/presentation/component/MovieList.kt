@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.presentation.movielist.MovieListViewModel
 
@@ -19,14 +20,14 @@ fun MovieList(
     modifier: Modifier = Modifier,
     loading: Boolean,
     movies: List<Movie>,
+    navController: NavController
 ) {
     if(loading){
         CircularProgressIndicator(
             modifier = modifier
         )
     }else{
-        LazyColumn(
-        ){
+        LazyColumn(){
             itemsIndexed(
                 items = movies
             ){index, movie->
@@ -36,7 +37,9 @@ fun MovieList(
                     viewModel = viewModel,
                     movie = movie,
                     isFavorite = isFavorite.value,
-                    onClick = { Log.i("MYLOGS: " ,"MOVIE CARD CLICKED!")}
+                    onClick = { navController.navigate(
+                        "movie_detail_screen/${movie.trackId}"
+                    )}
                 )
             }
         }

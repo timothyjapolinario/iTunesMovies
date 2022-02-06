@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ShimmerRecipeCardItem(
+fun ShimmerMovieCardItem(
     imageHeight: Dp,
     padding: Dp = 16.dp
 ){

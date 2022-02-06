@@ -46,7 +46,7 @@ fun SearchBar(
             onValueChange = {newString->
                 text = newString
                 viewModel.searchQuery.value = text
-                Log.i("MYLOGS: ", text)
+                newSearch()
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,

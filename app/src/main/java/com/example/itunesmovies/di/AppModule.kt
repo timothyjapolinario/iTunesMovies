@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.itunesmovies.data.local.FavoriteMoviesDatabase
 import com.example.itunesmovies.data.local.MovieDao
+import com.example.itunesmovies.data.local.UserDao
 import com.example.itunesmovies.data.remote.iTunesMovieApi.iTunesMovieApi
 import com.example.itunesmovies.data.remote.responses.ResultMapper
 import com.example.itunesmovies.repository.LocalMovieRepository
@@ -29,9 +30,14 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun  provideUserDao(database: FavoriteMoviesDatabase):UserDao= database.getUserDao()
+
+    @Singleton
+    @Provides
     fun provideLocalRepository(
-        dao: MovieDao
-    ) = LocalMovieRepository(dao)
+        movieDao: MovieDao,
+        userDao: UserDao
+    ) = LocalMovieRepository(movieDao,userDao)
 
     @Singleton
     @Provides

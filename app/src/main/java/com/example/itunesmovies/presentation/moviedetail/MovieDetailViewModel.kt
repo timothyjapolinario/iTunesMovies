@@ -1,6 +1,9 @@
-package com.example.itunesmovies.presentation.movielist
+package com.example.itunesmovies.presentation.moviedetail
 
 import android.util.Log
+import androidx.compose.material.BottomDrawerState
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,10 +21,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel  @Inject constructor(
+class MovieDetailViewModel  @Inject constructor(
     private val repository: iTunesMovieRepository,
     private val localMovieRepository: LocalMovieRepository
 ): ViewModel(){
+
+    @OptIn(ExperimentalMaterialApi::class)
+    val bottomDrawerState = BottomDrawerState(BottomDrawerValue.Closed)
     val favoriteMovieIds:MutableState<List<Int>> = mutableStateOf(listOf())
     val isLoading = mutableStateOf(false)
     var loadError = mutableStateOf("")
@@ -30,11 +36,6 @@ class MovieListViewModel  @Inject constructor(
     val movies:MutableState<List<Movie>> = mutableStateOf(listOf())
     val searchQuery = mutableStateOf("star")
 
-
-    /*
-    * Get all favorite id for checking if favorite or not
-    * Note: This gets called every recompose and needs to be fixed.
-    * */
     fun getAllFavoriteId() = viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getAllFavoriteMovieId().distinctUntilChanged().collect { result->
             try{
@@ -46,44 +47,14 @@ class MovieListViewModel  @Inject constructor(
             }
         }
     }
-    fun checkUser() {
-        viewModelScope.launch(Dispatchers.IO){
-            localMovieRepository.getAllFavoriteMovieId().distinctUntilChanged().collect() { result->
-                try{
-                    if(result.isEmpty()){
-                        localMovieRepository.insertUser(User())
-                        Log.i("MYLOGS: ", "INSERTED A USER!")
-                    }
-                }catch (e:Exception){
-                }
-            }
-        }
-    }
     suspend fun searchMovie(): Resource<List<Movie>> {
         return repository.getSearchMovieList("cat")
     }
 
-    suspend fun newSearch(){
-        viewModelScope.launch(Dispatchers.Default) {
-            isLoading.value = true
-            movies.value = listOf()//resetSearch
-            val result = repository.getSearchMovieList(searchQuery.value)
-            isLoading.value = false
-            when(result){
-                is Resource.Success->{
-                    movies.value = result.data!!
-                    isLoading.value = false
-                }
-                is Resource.Error->{
-                    loadError.value = result.message!!
-                    isLoading.value = false
-                }
-                is Resource.Loading->{
-                    Log.i("MYLOGS: ", "loading")
-                }
-            }
-        }
+    suspend fun getMovieFromNetwork(id:Int): Resource<Movie>{
+        return repository.getMovieInfo(id)
     }
+
     suspend fun removeFromFavorite(movie: Movie){
         if(!isAddingOrRemovingToDatabase.value){
             Log.i("MYLOGS: ", "Adding to database")
