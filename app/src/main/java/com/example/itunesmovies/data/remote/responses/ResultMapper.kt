@@ -4,6 +4,14 @@ import android.util.Log
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.models.util.DomainMapper
 
+/**
+ * An mapper class to map the result the data from the network
+ * to a domain class that only has the properties needed.
+ * @param Result
+ * @param Movie
+ * */
+
+
 class ResultMapper: DomainMapper<Result, Movie>{
     override fun mapToDomainModel(model: Result): Movie {
 

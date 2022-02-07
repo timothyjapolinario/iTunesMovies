@@ -1,6 +1,5 @@
 package com.example.itunesmovies.presentation.movielist
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -17,10 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.presentation.component.SearchBar
-import com.example.itunesmovies.util.Resource
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.itunesmovies.presentation.component.MovieList
 import kotlinx.coroutines.launch
@@ -33,10 +28,7 @@ fun MovieListScreen(
 
 
     viewModel.getAllFavoriteId()
-    Log.i("MYLOGS: ", "MOVIELIST RECOMPO2")
-
     val movies = viewModel.movies.value
-
     val coroutineScope = rememberCoroutineScope()
     val isLoading = viewModel.isLoading.value
 
@@ -61,7 +53,6 @@ fun MovieListScreen(
                         else if(viewModel.isOnFavorite.value){
                             viewModel.getAllFavoriteMovies()
                             viewModel.searchMovieLocal()
-                            Log.i("TRACE", "line 80")
                         }
                     }}
                 )
@@ -108,7 +99,6 @@ fun MovieListScreen(
                     context = context,
                     navController = navController
                 )
-                Log.i("MYLOGS: list size- ",movies.size.toString())
             }
         }
     }

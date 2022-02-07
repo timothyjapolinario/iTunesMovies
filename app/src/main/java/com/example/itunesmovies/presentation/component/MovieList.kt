@@ -1,16 +1,12 @@
 package com.example.itunesmovies.presentation.component
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.itunesmovies.models.Movie
 import com.example.itunesmovies.presentation.movielist.MovieListViewModel
@@ -24,7 +20,6 @@ fun MovieList(
     context: Context,
     navController: NavController
 ) {
-    Log.i("MYLOGS: ", "MOVIELIST RECOMPO")
     if(loading){
         CircularProgressIndicator(
             modifier = modifier

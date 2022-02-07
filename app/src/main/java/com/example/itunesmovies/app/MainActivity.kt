@@ -1,4 +1,4 @@
-package com.example.itunesmovies.presentation
+package com.example.itunesmovies.app
 
 import android.graphics.Movie
 import android.os.Bundle
@@ -29,9 +29,17 @@ class MainActivity : ComponentActivity() {
             ITunesMoviesTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "movie_list_screen"){
+
+                    /**
+                     *Navigates to [MovieListScreen]
+                     * */
                     composable("movie_list_screen"){
                         MovieListScreen(navController = navController)
                     }
+                    /**
+                     *Navigates to [MovieDetailScreen]
+                     *@param trackId
+                     * */
                     composable("movie_detail_screen/{trackId}",
                         arguments = listOf(
                             navArgument("trackId"){
@@ -44,6 +52,10 @@ class MainActivity : ComponentActivity() {
                         }
                         MovieDetailScreen(trackId = trackId!!)
                     }
+                    /**
+                     *Navigates to [MovieDetailOfflineScreen]
+                     *@param trackId
+                     * */
                     composable("movie_detail_offline_screen/{trackId}",
                         arguments = listOf(
                             navArgument("trackId"){

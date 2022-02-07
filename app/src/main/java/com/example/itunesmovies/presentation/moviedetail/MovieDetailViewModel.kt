@@ -4,9 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.compose.material.BottomDrawerState
-import androidx.compose.material.BottomDrawerValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -28,27 +25,26 @@ class MovieDetailViewModel  @Inject constructor(
     private val localMovieRepository: LocalMovieRepository
 ): ViewModel(){
 
-    @OptIn(ExperimentalMaterialApi::class)
-    val bottomDrawerState = BottomDrawerState(BottomDrawerValue.Closed)
     val favoriteMovieIds:MutableState<List<Int>> = mutableStateOf(listOf())
-
     var isAddingOrRemovingToDatabase = mutableStateOf(false)
     val movies:MutableState<List<Movie>> = mutableStateOf(listOf())
-    val searchQuery = mutableStateOf("star")
     val currentMovie:MutableState<Movie?> = mutableStateOf(null)
 
+    //Get all favorite movie id
     fun getAllFavoriteId() = viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getAllFavoriteMovieId().distinctUntilChanged().collect { result->
             try{
                 if(result.isNotEmpty()){
                     favoriteMovieIds.value = result
-                    Log.i("MYLOGS: ID-", favoriteMovieIds.value[0].toString())
+                }else{
+                    favoriteMovieIds.value = listOf()
                 }
             }catch (e:Exception){
             }
         }
     }
 
+    //Check if there is an internet connection
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -71,13 +67,12 @@ class MovieDetailViewModel  @Inject constructor(
         return false
     }
 
-    suspend fun searchMovie(): Resource<List<Movie>> {
-        return repository.getSearchMovieList("cat")
-    }
-
+    //Get movie from the iTunesApi
     suspend fun getMovieFromNetwork(id:Int): Resource<Movie>{
         return repository.getMovieInfo(id)
     }
+
+    //Get movie from the local database
     fun getMovieFromLocal(id: Int) = viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getMovie(trackId = id).distinctUntilChanged().collect { result->
             try{
@@ -87,14 +82,17 @@ class MovieDetailViewModel  @Inject constructor(
         }
     }
 
+    //Remove a favorite movie from the local database
     suspend fun removeFromFavorite(movie: Movie){
         if(!isAddingOrRemovingToDatabase.value){
-            Log.i("MYLOGS: ", "Adding to database")
+            Log.i("MYLOGS: ", "removing from database")
             isAddingOrRemovingToDatabase.value = true
             localMovieRepository.remove(movie.trackId)
             isAddingOrRemovingToDatabase.value = false
         }
     }
+
+    //Add a favorite movie to the local database
     suspend fun addToFavorites(movie:Movie){
         if(!isAddingOrRemovingToDatabase.value){
             Log.i("MYLOGS: ", "Adding to database")

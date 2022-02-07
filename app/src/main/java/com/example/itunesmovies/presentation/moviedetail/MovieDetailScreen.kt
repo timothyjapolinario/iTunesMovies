@@ -32,7 +32,6 @@ import kotlinx.coroutines.launch
 fun MovieDetailScreen(
     viewModel: MovieDetailViewModel = hiltViewModel(),
     trackId: Int,
-
 ) {
     val context = LocalContext.current
     val movie = produceState<Resource<Movie>>(initialValue = Resource.Loading()){

@@ -28,18 +28,13 @@ class MovieListViewModel  @Inject constructor(
     val favoriteMovieIds:MutableState<List<Int>> = mutableStateOf(listOf())
     val isLoading = mutableStateOf(false)
     var loadError = mutableStateOf("")
-    var hasUser = ""
     var isAddingOrRemovingToDatabase = mutableStateOf(false)
     val movies:MutableState<List<Movie>> = mutableStateOf(listOf())
     val searchQuery = mutableStateOf("")
     val cachedMovies:MutableState<List<Movie>> = mutableStateOf(listOf())
-    val favoriteCachedMovies: MutableState<List<Movie>> = mutableStateOf(listOf())
     val favoriteMovies:MutableState<List<Movie>> = mutableStateOf(listOf())
 
-    /*
-    * Get all favorite id for checking if favorite or not
-    * Note: This gets called every recompose and needs to be fixed.
-    * */
+    //Get all favorite movie id
     fun getAllFavoriteId() = viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getAllFavoriteMovieId().distinctUntilChanged().collect { result->
             try{
@@ -51,6 +46,7 @@ class MovieListViewModel  @Inject constructor(
         }
     }
 
+    //Check if there is internet connection
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -73,6 +69,7 @@ class MovieListViewModel  @Inject constructor(
         return false
     }
 
+    //Method is called when the "favorite button" is clicked
     fun onClickFavorite(){
         isLoading.value = true
         //favorite to unfavorite lists
@@ -80,17 +77,16 @@ class MovieListViewModel  @Inject constructor(
             isOnFavorite.value = false
             movies.value = cachedMovies.value
             isLoading.value = false
-            Log.i("TRACE:", "onClickFavorite true")
-            Log.i("TRACE:", "movies -> cachedMovies")
         //unfavorite to favorite lists
         }else{
             isOnFavorite.value = true
             getAllFavoriteMovies()
             searchMovieLocal()
             movies.value = favoriteMovies.value
-            Log.i("TRACE:", "onClickFavorite else")
         }
     }
+
+    //Get all favorite movies
     fun getAllFavoriteMovies()=viewModelScope.launch(Dispatchers.IO){
         localMovieRepository.getAllFavoriteMovies().distinctUntilChanged().collect { result->
             try{
@@ -114,22 +110,12 @@ class MovieListViewModel  @Inject constructor(
             }
         }
     }
-//    val listToSearch = movies.value
-//    viewModelScope.launch {
-//        if(searchQuery.value.isEmpty()){
-//            movies.value = favoriteCachedMovies.value
-//            return@launch
-//        }
-//        val result = listToSearch.filter{movie->
-//            movie.trackName.contains(searchQuery.value.trim(), ignoreCase = true)
-//        }
-//        movies.value=result
-//    }
+
+    //Search favorite movies from the local database
     fun searchMovieLocal()=viewModelScope.launch {
         localMovieRepository.searchFavoriteMovie("%${searchQuery.value}%").distinctUntilChanged().collect {result->
             try{
                 if(result.isNotEmpty()){
-                    Log.i("TRACE:", result[0].trackName)
                     favoriteMovies.value = result
                     if(isOnFavorite.value){
                         if(searchQuery.value.isNotEmpty()){
@@ -141,6 +127,8 @@ class MovieListViewModel  @Inject constructor(
             }
         }
     }
+
+    //Search movies from the iTunesApi
     suspend fun newSearch(){
         viewModelScope.launch(Dispatchers.Default) {
             isLoading.value = true
@@ -158,14 +146,14 @@ class MovieListViewModel  @Inject constructor(
                     isLoading.value = false
                 }
                 is Resource.Loading->{
-                    Log.i("MYLOGS: ", "loading")
                 }
             }
         }
     }
+
+    //Remove favorite movie from the local database
     suspend fun removeFromFavorite(movie: Movie){
         if(!isAddingOrRemovingToDatabase.value){
-            Log.i("MYLOGS: ", "Removing")
             isAddingOrRemovingToDatabase.value = true
             localMovieRepository.remove(movie.trackId)
             isAddingOrRemovingToDatabase.value = false
@@ -173,9 +161,10 @@ class MovieListViewModel  @Inject constructor(
 
         }
     }
+
+    //Add favorite movie to the local database
     suspend fun addToFavorites(movie:Movie){
         if(!isAddingOrRemovingToDatabase.value){
-            Log.i("MYLOGS: ", "Adding to database")
             isAddingOrRemovingToDatabase.value = true
             localMovieRepository.insert(movie)
             isAddingOrRemovingToDatabase.value = false

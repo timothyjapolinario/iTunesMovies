@@ -1,6 +1,6 @@
 package com.example.itunesmovies.presentation.component
 
-import android.util.Log
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -29,8 +28,6 @@ fun MovieCard(
     viewModel:MovieListViewModel,
     onClick: ()-> Unit,
 ){
-    Log.i("MYLOGS:", "CARD RECOMPOSED!")
-    Log.i("MYLOGS: Favorite-", isFavorite.toString())
     val coroutineScope = rememberCoroutineScope()
     val movieImagePainter = rememberImagePainter(
         data = movie.artworkUrl100,
@@ -80,7 +77,7 @@ fun MovieCard(
                 Text(text = movie.primaryGenreName!!,
                     fontSize = 10.sp
                 )
-                Text(text = movie.trackHdPrice!!.toString(),
+                Text(text = "$" + movie.trackHdPrice!!.toString(),
                     fontSize = 12.sp
                 )
             }
@@ -110,40 +107,6 @@ fun MovieCard(
                         }
                     }
                 )
-            }
-        }
-    }
-}
-@Preview
-@Composable
-fun MovieCardPreview(){
-    Card(
-        shape = MaterialTheme.shapes.small,
-        modifier = Modifier
-            .padding(
-                bottom = 6.dp,
-                top = 6.dp
-            )
-            .fillMaxWidth()
-            .clickable(onClick = { }),
-        elevation = 8.dp
-    ){
-        Row{
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .height(100.dp)
-
-            ){
-                ShimmerMovieCardItem(imageHeight = 100.dp)
-            }
-            Column(
-                modifier = Modifier
-                    .weight(3f)
-                    .fillMaxWidth()
-                    .height(100.dp)
-            ){
             }
         }
     }

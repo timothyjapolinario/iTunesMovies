@@ -12,6 +12,18 @@ import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.ImagePainter
 
+
+/**
+ * Custom class for image that has a place holder in case of loading.
+ * @param pointer
+ * @param placeHolder
+ * @param contentDescription
+ * @param modifier
+ * @param alignment
+ * @param contentScale
+ * @param alpha
+ * @param colorFilter
+ * */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CustomImage(
